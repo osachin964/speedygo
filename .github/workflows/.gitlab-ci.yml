@@ -31,7 +31,7 @@ jobs:
         run: curl -LsSo /tmp/codacy-analysis-cli.tar.gz https://github.com/codacy/codacy-analysis-cli/releases/latest/download/codacy-analysis-cli-linux.tar
 
       - name: Extract Codacy Analysis CLI
-        run: tar -xf /tmp/codacy-analysis-cli.tar.gz -C /tmp/
+        run: tar -xf /tmp/codacy-analysis-cli.tar -C /tmp/
 
       - name: Run Codacy Analysis with coverage report
         run: |
