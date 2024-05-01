@@ -27,19 +27,13 @@ jobs:
       - name: Build with Maven and generate coverage report
         run: mvn clean verify jacoco:report
 
-      - name: Download Codacy Analysis CLI
-        run: curl -LsSo /tmp/codacy-analysis-cli.tar.gz https://github.com/codacy/codacy-analysis-cli/releases/latest/download/codacy-analysis-cli-linux.tar
-
-      - name: Extract Codacy Analysis CLI
-        run: tar -xf /tmp/codacy-analysis-cli.tar -C /tmp/
-
-      - name: Run Codacy Analysis with coverage report
-        run: |
-          /tmp/codacy-analysis-cli/analyze \
-            --directory . \
-            --coverage-xml=target/site/jacoco/jacoco.xml \
-            --force
-
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      - name: Run Codacy Analysis CLI
+        uses: codacy/codacy-analysis-cli-action@master
+        with:
+          tool: SpotBugs
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          # or
+          # api-token: ${{ secrets.CODACY_API_TOKEN }}
+          upload: true
+          max-allowed-issues: 2147483647
 
