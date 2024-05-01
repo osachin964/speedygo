@@ -28,13 +28,14 @@ jobs:
         run: mvn clean verify jacoco:report
 
       - name: Download Codacy Analysis CLI
-        run: |
-          curl -LsSo /tmp/codacy-analysis-cli https://github.com/codacy/codacy-analysis-cli/releases/latest/download/codacy-analysis-cli-linux
-          chmod +x /tmp/codacy-analysis-cli
+        run: curl -LsSo /tmp/codacy-analysis-cli.tar.gz https://github.com/codacy/codacy-analysis-cli/releases/latest/download/codacy-analysis-cli-linux.tar.gz
+
+      - name: Extract Codacy Analysis CLI
+        run: tar -xzf /tmp/codacy-analysis-cli.tar.gz -C /tmp/
 
       - name: Run Codacy Analysis with coverage report
         run: |
-          ./tmp/codacy-analysis-cli/analyze \
+          /tmp/codacy-analysis-cli/analyze \
             --directory . \
             --coverage-xml=target/site/jacoco/jacoco.xml \
             --force
