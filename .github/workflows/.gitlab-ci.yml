@@ -1,5 +1,10 @@
+name: Codacy Analysis
+env:
+  CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+run-name: |
+    curl -L https://download.codacy.com/2.0.0/linux/codacy-coverage-reporter-assembly.jar -o codacy-coverage-reporter-assembly.jar
+    java -jar codacy-coverage-reporter-assembly.jar report -l Java -r target/site/jacoco/jacoco.xml -t $CODACY_PROJECT_TOKEN
 
-name: Java CI with Maven
 
 on:
   push:
@@ -24,6 +29,8 @@ jobs:
       run: mvn clean package
     - name: Test
       run: mvn test
+
+      
     
       
 
