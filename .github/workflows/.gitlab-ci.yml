@@ -34,7 +34,7 @@ jobs:
 
       - name: Run Codacy Analysis with coverage report
         run: |
-          /tmp/codacy-analysis-cli/analyze \
+          ./tmp/codacy-analysis-cli/analyze \
             --directory . \
             --coverage-xml=target/site/jacoco/jacoco.xml \
             --force
