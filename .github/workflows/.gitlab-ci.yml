@@ -25,7 +25,7 @@ jobs:
     - name: Test
       run: mvn test
     - name: Java lint
-      run:  mvn clean install -DskipTests=true
-            mvn pmd:check
+      run: mvn clean install -DskipTests=true
+           mvn pmd:check
       
 
