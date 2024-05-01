@@ -1,0 +1,31 @@
+.MainDash{
+    /* padding-top: 1rem; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.topLine{
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+}
+.topLine>:nth-child(2){
+    color: whitesmoke;
+    font-size: large;
+    background-color: rgb(94, 137, 186);
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+    .MainDash{
+        justify-content:flex-start;
+        margin-top: 2rem;
+    }
+}
+
+@media screen and (max-width: 768px)
+{
+    .MainDash{
+        align-items: center;
+    }
+}

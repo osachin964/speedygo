@@ -1,0 +1,71 @@
+global:
+  scrape_interval:     10s
+  evaluation_interval: 10s
+
+scrape_configs:
+  - job_name: 'api_gateway'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8080']
+        labels:
+          application: 'api-gateway'
+  - job_name: 'authentication_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:9099']
+        labels:
+          application: 'authentication Service'
+  - job_name: 'eureka_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:8761']
+        labels:
+          application: 'eureka Service'
+  - job_name: 'registration_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:9082']
+        labels:
+          application: 'registration Service'
+  - job_name: 'transporter_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:8090' ]
+        labels:
+          application: 'transporter Service'
+  - job_name: 'customer_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9096' ]
+        labels:
+          application: 'customer Service'
+  - job_name: 'booking_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9089' ]
+        labels:
+          application: 'booking Service'
+  - job_name: 'payment_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9098' ]
+        labels:
+          application: 'payment Service'
+  - job_name: 'email_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9097' ]
+        labels:
+          application: 'email Service'
+  - job_name: 'chat_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9095' ]
+        labels:
+          application: 'chat Service'
+  - job_name: 'review_service'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'localhost:9083' ]
+        labels:
+          application: 'review Service'

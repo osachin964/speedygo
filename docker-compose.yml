@@ -1,0 +1,243 @@
+version: "3"
+services:
+  mongodbServices:
+    image: mongo:latest
+    container_name: mongo-container
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 27017:27017
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    hostname: localhost
+    network_mode: host
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: Admin@123
+      MYSQL_DATABASE: speedygo
+      #      MYSQL_PASSWORD: Admin@123
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+
+  rabbitmq:
+    image: rabbitmq:3.6-management-alpine
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - 15672:15672
+      - 5672:5672
+
+  eureka-server:
+    build: eureka-server/
+    container_name: eureka-server
+    restart: always
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 8761:8761
+
+  api-gateway:
+    build: api-gateway/
+    container_name: api-gateway
+    depends_on:
+      - eureka-server
+    restart: always
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 8081:8081
+
+  config-server:
+    build: config-server/
+    container_name: config-server
+    restart: always
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 8888:8888
+
+  registration-service:
+    container_name: registration-service
+    build: registration-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 9082:9082
+    depends_on:
+      - eureka-server
+      - mongodbServices
+    restart: always
+
+  authentication-service:
+    container_name: authentication-service
+    build: authentication-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 9099:9099
+    depends_on:
+      - eureka-server
+      - mysql
+    restart: always
+
+  customer-service:
+    container_name: customer-service
+    build: customer-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 9096:9096
+    depends_on:
+      - eureka-server
+      - mongodbServices
+    restart: always
+
+  transporter-service:
+    container_name: transporter-service
+    build: transporter-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 8090:8090
+    depends_on:
+      - eureka-server
+      - mongodbServices
+    restart: always
+
+  booking-service:
+    container_name: booking-service
+    build: booking-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 9089:9089
+    depends_on:
+      - eureka-server
+      - mongodbServices
+    restart: always
+
+  payment-service:
+    container_name: payment-service
+    build: payment-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 9098:9098
+    depends_on:
+      - eureka-server
+      - mysql
+    restart: always
+
+  email-service:
+    container_name: email-service
+    build: email-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 9097:9097
+    depends_on:
+      - eureka-server
+    restart: always
+
+  chat-service:
+    container_name: chat-service
+    build: chat-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 9095:9095
+    depends_on:
+      - eureka-server
+      - mongodbServices
+    restart: always
+
+  review-service:
+    container_name: review-service
+    build: review-service/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 9083:9083
+    depends_on:
+      - eureka-server
+      - mongodbServices
+    restart: always
+
+  ## Prometheus
+  prometheus:
+    image: prom/prometheus:v2.37.1
+    container_name: prometheus
+    network_mode: host
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - api-gateway
+      - authentication-service
+      - booking-service
+      - chat-service
+      - customer-service
+      - email-service
+      - eureka-server
+      - payment-service
+      - registration-service
+      - review-service
+      - transporter-service
+
+  grafana:
+    image: grafana/grafana-oss:8.5.2
+    container_name: grafana
+    network_mode: host
+    restart: unless-stopped
+    user: root
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    environment:
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_DOMAIN=localhost
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      # Enabled for logging
+      - GF_LOG_MODE=console file
+      - GF_LOG_FILTERS=alerting.notifier.slack:debug alert-manager:debug alert:debug
+
+#  front-end:
+#    build: front-end/
+#    ports:
+#      - "3030:3030"
+#    environment:
+#      - NODE_ENV=development
+#    network_mode: host
+#    hostname: localhost
+#    command: yarn start
+
+  product-webapp:
+    container_name: product-webapp
+    build: product-webapp/
+    network_mode: host
+    hostname: localhost
+    ports:
+      - 7777:7777
+    depends_on:
+      - eureka-server
+    restart: always
+  
+  h2:
+    container_name: h2
+    image: oscarfonts/h2
+    ports:
+      - 8082:8082
+    restart: always   
+
+  #        add dockercompose for neo4j
+  
+
+
+
