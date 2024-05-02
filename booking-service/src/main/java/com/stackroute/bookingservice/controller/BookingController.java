@@ -18,6 +18,8 @@ public class BookingController {
 
     @Autowired
     BookingService bookingService;
+    BookingRepository bookingRepository;
+    
 
     @PostMapping("/create-booking")
     public ResponseEntity<String> createBooking(@RequestBody BookingDto bookingDto) {
