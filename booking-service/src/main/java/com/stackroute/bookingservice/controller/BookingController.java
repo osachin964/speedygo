@@ -18,9 +18,8 @@ public class BookingController {
 
     @Autowired
     BookingService bookingService;
-    BookingRepository bookingRepository;
+   
     
-
     @PostMapping("/create-booking")
     public ResponseEntity<String> createBooking(@RequestBody BookingDto bookingDto) {
         return bookingService.createBooking(bookingDto);
@@ -29,7 +28,7 @@ public class BookingController {
     @GetMapping("/get-booking-by-customerId/{customerId}")
     public ResponseEntity<List<Booking>> getBookingByCustomer(@PathVariable("customerId") String customerId) {
         List<Booking> bookings = bookingService.getBookingByCustomer(customerId);
-        return ResponseEntity.ok(bookings);
+        // return ResponseEntity.ok(bookings);
     }
 
     @GetMapping("/get-booking-by-transporterId/{transporterId}")
