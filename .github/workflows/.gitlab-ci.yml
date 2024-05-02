@@ -36,4 +36,11 @@ jobs:
           # api-token: ${{ secrets.CODACY_API_TOKEN }}
           upload: true
           max-allowed-issues: 2147483647
+          
+      # Upload the analysis results to Codacy
+      - name: Upload results to Codacy
+        run: |
+          /tmp/codacy-analysis-cli report
 
+        env:
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
